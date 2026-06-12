@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createLoan } from '../../services/api';
 import toast from 'react-hot-toast';
+import { User, Coins, ClipboardList } from 'lucide-react';
 
 const GOLD_TYPES = ['Necklace', 'Ring', 'Bangle', 'Chain', 'Earring', 'Bracelet', 'Anklet', 'Others'];
 const PURITIES = ['24K (99.9%)', '22K (91.6%)', '18K (75%)', '14K (58.3%)', 'Other'];
@@ -69,7 +70,7 @@ export default function CreateLoan() {
         {/* Customer Info */}
         <div className="card">
           <h2 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
-            <span>👤</span> Customer Information
+            <User className="w-5 h-5 text-blue-400" /> Customer Information
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Customer Name *">
@@ -90,7 +91,7 @@ export default function CreateLoan() {
         {/* Gold Info */}
         <div className="card">
           <h2 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
-            <span>🪙</span> Gold Information
+            <Coins className="w-5 h-5 text-gold-400" /> Gold Information
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Gold Type *">
@@ -115,7 +116,7 @@ export default function CreateLoan() {
         {/* Loan Info */}
         <div className="card">
           <h2 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
-            <span>📋</span> Loan Information
+            <ClipboardList className="w-5 h-5 text-green-400" /> Loan Information
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Loan Amount (₹) *">
@@ -141,7 +142,7 @@ export default function CreateLoan() {
 
           {/* Preview */}
           {form.loanAmount && form.interestRate && (
-            <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
                 ['Monthly Interest', `₹${((parseFloat(form.loanAmount || 0) * parseFloat(form.interestRate || 0)) / 100).toLocaleString('en-IN')}`],
                 ['Loan Amount', `₹${parseFloat(form.loanAmount || 0).toLocaleString('en-IN')}`],

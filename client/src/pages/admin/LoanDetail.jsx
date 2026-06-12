@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getLoan, approveLoan, rejectLoan, closeLoan, releaseGold, updateLoan } from '../../services/api';
 import toast from 'react-hot-toast';
+import { User, Coins, ClipboardList, StickyNote } from 'lucide-react';
 
 const STATUS_BADGE = {
   Pending:  'badge badge-pending',
@@ -74,7 +75,7 @@ export default function LoanDetail() {
   return (
     <div className="max-w-4xl page-enter">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div className="flex items-center gap-4">
           <button onClick={() => navigate(-1)} className="text-dark-400 hover:text-white transition-colors">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,8 +83,8 @@ export default function LoanDetail() {
             </svg>
           </button>
           <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold gold-text font-mono">{loan.loanNumber}</h1>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <h1 className="text-xl sm:text-2xl font-bold gold-text font-mono">{loan.loanNumber}</h1>
               <span className={STATUS_BADGE[loan.status]}>{loan.status}</span>
               {loan.goldReleased && <span className="badge bg-purple-500/20 text-purple-400 border border-purple-500/30">Gold Released</span>}
             </div>
@@ -92,7 +93,7 @@ export default function LoanDetail() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {loan.status === 'Pending' && <>
             <button onClick={() => handleAction('approve')} disabled={!!actionLoading}
               className="bg-green-500/20 border border-green-500/30 text-green-400 hover:bg-green-500/30 px-4 py-2 rounded-xl text-sm font-medium transition-colors">
@@ -121,7 +122,7 @@ export default function LoanDetail() {
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Customer Info */}
         <div className="card">
-          <h2 className="text-white font-semibold mb-4 flex items-center gap-2">👤 Customer</h2>
+          <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><User className="w-5 h-5 text-blue-400" /> Customer</h2>
           <Row label="Name" value={loan.customerName} />
           <Row label="Mobile" value={loan.mobile} />
           <Row label="Aadhaar" value={loan.aadhaar || '—'} />
@@ -130,7 +131,7 @@ export default function LoanDetail() {
 
         {/* Gold Info */}
         <div className="card">
-          <h2 className="text-white font-semibold mb-4 flex items-center gap-2">🪙 Gold Details</h2>
+          <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><Coins className="w-5 h-5 text-gold-400" /> Gold Details</h2>
           <Row label="Gold Type" value={loan.goldType} />
           <Row label="Weight" value={`${loan.goldWeight} grams`} />
           <Row label="Purity" value={loan.goldPurity} />
@@ -139,7 +140,7 @@ export default function LoanDetail() {
 
         {/* Loan Info */}
         <div className="card">
-          <h2 className="text-white font-semibold mb-4 flex items-center gap-2">📋 Loan Details</h2>
+          <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><ClipboardList className="w-5 h-5 text-green-400" /> Loan Details</h2>
           <Row label="Loan Amount" value={fmtINR(loan.loanAmount)} accent />
           <Row label="Interest Rate" value={`${loan.interestRate}% per month`} />
           <Row label="Monthly Interest" value={fmtINR(monthlyInterest)} />
@@ -150,7 +151,7 @@ export default function LoanDetail() {
 
         {/* Notes */}
         <div className="card">
-          <h2 className="text-white font-semibold mb-4">📝 Notes & Timeline</h2>
+          <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><StickyNote className="w-5 h-5 text-purple-400" /> Notes & Timeline</h2>
           <div className="text-dark-400 text-sm mb-4">{loan.notes || 'No notes added.'}</div>
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-xs text-dark-500">

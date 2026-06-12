@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Expense = require('../models/Expense');
 const CashFlow = require('../models/CashFlow');
-const { protect } = require('../middleware/auth');
+const { protect, authorizeRole } = require('../middleware/auth');
 
 router.use(protect);
+router.use(authorizeRole('admin'));
 
 // @route GET /api/expenses
 router.get('/', async (req, res) => {

@@ -65,4 +65,9 @@ export const sendContact = (data) => API.post('/contact', data);
 export const getMessages = () => API.get('/contact');
 export const markRead = (id) => API.patch(`/contact/${id}/read`);
 
+// Users (Admin only)
+export const getUsers = () => API.get('/users');
+export const createUser = (data) => API.post('/users', data);
+export const deleteUser = (id) => API.delete(`/users/${id}`);
+
 export default API;

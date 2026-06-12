@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { Zap, ShieldCheck, Coins, ClipboardCheck, Percent, Award, Scale, RefreshCw, CreditCard, Unlock, IdCard, Smartphone, Home as HomeIcon, MapPin, Clock, CheckCircle2, Menu, X } from 'lucide-react';
 
 const LanguageContext = createContext();
 
@@ -11,7 +12,7 @@ const translations = {
       title1: 'AS NAGAI',
       title2: 'ADAGU KADAI',
       subtitle: 'Get instant gold loans at the best rates. Safe storage, quick approval, and transparent process — trusted by thousands in Nagai.',
-      f1: '⚡ Instant Approval', f2: '🔒 Safe Gold Storage', f3: '💰 Best Interest Rates', f4: '📋 Quick Process',
+      f1: 'Instant Approval', f2: 'Safe Gold Storage', f3: 'Best Interest Rates', f4: 'Quick Process',
       btnApply: 'Apply for Loan →', btnCalc: 'Calculate Interest',
       stat1: 'Happy Customers', stat2: 'Experience', stat3: 'Secure'
     },
@@ -67,7 +68,7 @@ const translations = {
       title1: 'ஏ.எஸ் நகை',
       title2: 'அடகு கடை',
       subtitle: 'குறைந்த வட்டியில் உடனடி நகைக்கடன். பாதுகாப்பான சேமிப்பு, விரைவான அனுமதி மற்றும் வெளிப்படையான செயல்முறை — நாகையில் ஆயிரக்கணக்கானோரால் நம்பப்படுகிறது.',
-      f1: '⚡ உடனடி அனுமதி', f2: '🔒 பாதுகாப்பான சேமிப்பு', f3: '💰 குறைந்த வட்டி', f4: '📋 விரைவான செயல்முறை',
+      f1: 'உடனடி அனுமதி', f2: 'பாதுகாப்பான சேமிப்பு', f3: 'குறைந்த வட்டி', f4: 'விரைவான செயல்முறை',
       btnApply: 'கடன் விண்ணப்பிக்க →', btnCalc: 'வட்டி கணக்கிட',
       stat1: 'வாடிக்கையாளர்கள்', stat2: 'வருட அனுபவம்', stat3: 'பாதுகாப்பானது'
     },
@@ -170,10 +171,7 @@ function Navbar() {
               {lang === 'en' ? 'தமிழ்' : 'EN'}
             </button>
             <button onClick={() => setMenuOpen(!menuOpen)} className="text-white p-2">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {menuOpen ? <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  : <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />}
-              </svg>
+              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
@@ -227,8 +225,15 @@ function Hero() {
           </p>
 
           <div className="flex flex-wrap gap-3 mb-10">
-            {[t('hero').f1, t('hero').f2, t('hero').f3, t('hero').f4].map(f => (
-              <span key={f} className="bg-dark-700/80 border border-dark-600 text-dark-200 text-sm px-4 py-2 rounded-full">{f}</span>
+            {[
+              { text: t('hero').f1, icon: Zap },
+              { text: t('hero').f2, icon: ShieldCheck },
+              { text: t('hero').f3, icon: Coins },
+              { text: t('hero').f4, icon: ClipboardCheck },
+            ].map(({ text, icon: Icon }) => (
+              <span key={text} className="flex items-center gap-1.5 bg-dark-700/80 border border-dark-600 text-dark-200 text-sm px-4 py-2 rounded-full">
+                <Icon className="w-4 h-4 text-gold-400" /> {text}
+              </span>
             ))}
           </div>
 
@@ -263,7 +268,7 @@ function InterestSection() {
         <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
           <div className="relative card overflow-hidden group hover:border-gold-500/50 transition-colors duration-300">
             <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full -translate-y-8 translate-x-8" />
-            <div className="text-5xl mb-4">💛</div>
+            <Percent className="w-12 h-12 text-yellow-500 mb-4" />
             <div className="text-dark-400 text-sm font-medium uppercase tracking-wider mb-2">{t('interest').tier1}</div>
             <div className="text-3xl font-bold text-white mb-1">{t('interest').tier1Amt}</div>
             <div className="text-6xl font-black gold-text my-4">{t('interest').tier1Rate}</div>
@@ -275,7 +280,7 @@ function InterestSection() {
           <div className="relative card overflow-hidden group hover:border-gold-500/50 transition-colors duration-300 border-gold-500/30">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full -translate-y-8 translate-x-8" />
             <div className="absolute top-4 right-4 bg-gold-500 text-dark-900 text-xs font-bold px-3 py-1 rounded-full">{t('interest').popular}</div>
-            <div className="text-5xl mb-4">🏆</div>
+            <Award className="w-12 h-12 text-gold-400 mb-4" />
             <div className="text-dark-400 text-sm font-medium uppercase tracking-wider mb-2">{t('interest').tier2}</div>
             <div className="text-3xl font-bold text-white mb-1">{t('interest').tier2Amt}</div>
             <div className="text-6xl font-black gold-text my-4">{t('interest').tier2Rate}</div>
@@ -358,11 +363,11 @@ function Calculator() {
 function Services() {
   const { t } = useContext(LanguageContext);
   const SERVICES = [
-    { icon: '🪙', title: t('services').s1, desc: t('services').s1d },
-    { icon: '⚖️', title: t('services').s2, desc: t('services').s2d },
-    { icon: '🔄', title: t('services').s3, desc: t('services').s3d },
-    { icon: '💳', title: t('services').s4, desc: t('services').s4d },
-    { icon: '🔓', title: t('services').s5, desc: t('services').s5d },
+    { icon: Coins, title: t('services').s1, desc: t('services').s1d },
+    { icon: Scale, title: t('services').s2, desc: t('services').s2d },
+    { icon: RefreshCw, title: t('services').s3, desc: t('services').s3d },
+    { icon: CreditCard, title: t('services').s4, desc: t('services').s4d },
+    { icon: Unlock, title: t('services').s5, desc: t('services').s5d },
   ];
 
   return (
@@ -373,12 +378,14 @@ function Services() {
           <p className="text-dark-400">{t('services').subtitle}</p>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SERVICES.map((s, i) => (
-            <div key={s.title} className="card group hover:border-gold-500/40 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+          {SERVICES.map(({ icon: Icon, title, desc }, i) => (
+            <div key={title} className="card group hover:border-gold-500/40 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
               style={{ animationDelay: `${i * 0.1}s` }}>
-              <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">{s.icon}</div>
-              <h3 className="text-white font-bold text-lg mb-2">{s.title}</h3>
-              <p className="text-dark-400 text-sm leading-relaxed">{s.desc}</p>
+              <div className="mb-4 group-hover:scale-110 transition-transform duration-300">
+                <Icon className="w-10 h-10 text-gold-400" />
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
+              <p className="text-dark-400 text-sm leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>
@@ -398,13 +405,13 @@ function Documents() {
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
           {[
-            { icon: '🪪', doc: t('docs').d1, note: t('docs').d1d },
-            { icon: '💳', doc: t('docs').d2, note: t('docs').d2d },
-            { icon: '📱', doc: t('docs').d3, note: t('docs').d3d },
-            { icon: '🏠', doc: t('docs').d4, note: t('docs').d4d },
-          ].map(({ icon, doc, note }) => (
+            { icon: IdCard, doc: t('docs').d1, note: t('docs').d1d },
+            { icon: CreditCard, doc: t('docs').d2, note: t('docs').d2d },
+            { icon: Smartphone, doc: t('docs').d3, note: t('docs').d3d },
+            { icon: HomeIcon, doc: t('docs').d4, note: t('docs').d4d },
+          ].map(({ icon: Icon, doc, note }) => (
             <div key={doc} className="card text-center group hover:border-gold-500/40 transition-all duration-300 hover:-translate-y-1">
-              <div className="text-4xl mb-3 float">{icon}</div>
+              <div className="mb-3 float flex justify-center"><Icon className="w-10 h-10 text-gold-400" /></div>
               <h3 className="text-white font-semibold mb-1">{doc}</h3>
               <p className="text-dark-400 text-xs">{note}</p>
               <div className="mt-3 w-6 h-6 bg-green-500/20 border border-green-500/40 rounded-full flex items-center justify-center mx-auto">
@@ -445,12 +452,12 @@ function ContactSection() {
             <p className="text-dark-400 mb-8">{t('contact').subtitle}</p>
             <div className="space-y-4">
               {[
-                { icon: '📍', label: t('contact').l1, val: t('contact').l1v },
-                { icon: '🕒', label: t('contact').l2, val: t('contact').l2v },
-                { icon: '✅', label: t('contact').l3, val: t('contact').l3v },
-              ].map(({ icon, label, val }) => (
+                { icon: MapPin, label: t('contact').l1, val: t('contact').l1v },
+                { icon: Clock, label: t('contact').l2, val: t('contact').l2v },
+                { icon: CheckCircle2, label: t('contact').l3, val: t('contact').l3v },
+              ].map(({ icon: Icon, label, val }) => (
                 <div key={label} className="flex items-center gap-4 p-4 bg-dark-800 rounded-xl border border-dark-700">
-                  <span className="text-2xl">{icon}</span>
+                  <span className="text-gold-400"><Icon className="w-6 h-6" /></span>
                   <div>
                     <div className="text-dark-400 text-xs">{label}</div>
                     <div className="text-white font-medium">{val}</div>
@@ -464,7 +471,7 @@ function ContactSection() {
             <h3 className="text-white font-bold text-xl mb-6">{t('contact').formTitle}</h3>
             {status === 'success' ? (
               <div className="text-center py-8">
-                <div className="text-5xl mb-4">✅</div>
+                <div className="flex justify-center mb-4"><CheckCircle2 className="w-16 h-16 text-green-400" /></div>
                 <div className="text-green-400 font-semibold text-lg">{t('contact').success}</div>
                 <p className="text-dark-400 mt-2">{t('contact').successDesc}</p>
                 <button onClick={() => setStatus('')} className="btn-outline mt-4 text-sm px-4 py-2">{t('contact').btnAnother}</button>

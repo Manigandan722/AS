@@ -72,7 +72,7 @@ export default function CashFlow() {
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="card border-green-500/30 bg-green-500/5">
           <div className="text-dark-400 text-xs mb-1">Total Cash In</div>
           <div className="text-green-400 font-bold text-xl">{fmtINR(totals.in)}</div>

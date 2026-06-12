@@ -3,7 +3,7 @@ const router = express.Router();
 const Loan = require('../models/Loan');
 const Customer = require('../models/Customer');
 const CashFlow = require('../models/CashFlow');
-const { protect } = require('../middleware/auth');
+const { protect, authorizeRole } = require('../middleware/auth');
 
 // All routes protected
 router.use(protect);
@@ -171,7 +171,7 @@ router.patch('/:id/release-gold', async (req, res) => {
 });
 
 // @route DELETE /api/loans/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authorizeRole('admin'), async (req, res) => {
   try {
     await Loan.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Loan deleted.' });

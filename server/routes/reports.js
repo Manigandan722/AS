@@ -3,9 +3,10 @@ const router = express.Router();
 const Loan = require('../models/Loan');
 const CashFlow = require('../models/CashFlow');
 const Expense = require('../models/Expense');
-const { protect } = require('../middleware/auth');
+const { protect, authorizeRole } = require('../middleware/auth');
 
 router.use(protect);
+router.use(authorizeRole('admin'));
 
 const getRange = (type, dateStr) => {
   let start, end;

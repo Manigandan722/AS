@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getReport } from '../../services/api';
 import toast from 'react-hot-toast';
+import { CalendarDays, CalendarRange, Calendar } from 'lucide-react';
 
 const fmtINR = (n) => `₹${(n || 0).toLocaleString('en-IN')}`;
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-IN') : '—';
@@ -32,9 +33,9 @@ export default function Reports() {
   useEffect(() => { fetchReport(); }, [type, date]);
 
   const typeOptions = [
-    { value: 'daily', label: '📅 Daily' },
-    { value: 'weekly', label: '📆 Weekly' },
-    { value: 'monthly', label: '🗓️ Monthly' },
+    { value: 'daily', label: 'Daily', icon: CalendarDays },
+    { value: 'weekly', label: 'Weekly', icon: CalendarRange },
+    { value: 'monthly', label: 'Monthly', icon: Calendar },
   ];
 
   return (
@@ -47,10 +48,11 @@ export default function Reports() {
         </div>
         <div className="flex items-center gap-3">
           <div className="flex rounded-xl border border-dark-700 overflow-hidden">
-            {typeOptions.map(opt => (
-              <button key={opt.value} onClick={() => setType(opt.value)}
-                className={`px-4 py-2 text-sm font-medium transition-all ${type === opt.value ? 'bg-gold-500 text-dark-900' : 'bg-dark-800 text-dark-400 hover:bg-dark-700'}`}>
-                {opt.label}
+            {typeOptions.map(({ value, label, icon: Icon }) => (
+              <button key={value} onClick={() => setType(value)}
+                className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium transition-all ${type === value ? 'bg-gold-500 text-dark-900' : 'bg-dark-800 text-dark-400 hover:bg-dark-700'}`}>
+                <Icon className="w-4 h-4" />
+                {label}
               </button>
             ))}
           </div>
@@ -73,14 +75,14 @@ export default function Reports() {
           </div>
 
           {/* Summary */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <StatBox label="Loans Issued" value={report.loansIssued || 0} color="blue" />
             <StatBox label="Total Loan Amount" value={fmtINR(report.totalLoanAmount)} color="gold" />
             <StatBox label="Loans Closed" value={report.loansClosed || 0} />
             <StatBox label="Cash Collected" value={fmtINR(report.cashIn)} color="green" />
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <StatBox label="Cash Out" value={fmtINR(report.cashOut)} color="red" />
             <StatBox label="Total Expenses" value={fmtINR(report.expenses)} color="red" />
             <StatBox label={report.profit >= 0 ? 'Net Profit' : 'Net Loss'} value={fmtINR(Math.abs(report.profit))} color={report.profit >= 0 ? 'green' : 'red'} />

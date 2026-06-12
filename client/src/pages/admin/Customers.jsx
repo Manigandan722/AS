@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getCustomers, getCustomerLoans } from '../../services/api';
 import toast from 'react-hot-toast';
+import { MousePointerClick } from 'lucide-react';
 
 const fmtINR = (n) => `₹${(n || 0).toLocaleString('en-IN')}`;
 const fmtDate = (d) => d ? new Date(d).toLocaleDateString('en-IN') : '—';
@@ -102,7 +103,7 @@ export default function Customers() {
             </div>
           ) : (
             <div className="card flex flex-col items-center justify-center h-48 text-dark-500">
-              <span className="text-4xl mb-3">👆</span>
+              <MousePointerClick className="w-10 h-10 mb-3 text-dark-400" />
               <p>Select a customer to view their loan history</p>
             </div>
           )}

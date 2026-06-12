@@ -2,15 +2,17 @@ import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import { LayoutDashboard, Coins, Users, ArrowRightLeft, Receipt, LineChart, Mail, LogOut, Menu, Shield } from 'lucide-react';
 
 const NAV = [
-  { to: '/admin/dashboard', icon: '📊', label: 'Dashboard' },
-  { to: '/admin/loans', icon: '🪙', label: 'Loans' },
-  { to: '/admin/customers', icon: '👥', label: 'Customers' },
-  { to: '/admin/cashflow', icon: '💸', label: 'Cash Flow' },
-  { to: '/admin/expenses', icon: '🧾', label: 'Expenses' },
-  { to: '/admin/reports', icon: '📈', label: 'Reports' },
-  { to: '/admin/messages', icon: '✉️', label: 'Messages' },
+  { to: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/admin/loans', icon: Coins, label: 'Loans' },
+  { to: '/admin/customers', icon: Users, label: 'Customers' },
+  { to: '/admin/cashflow', icon: ArrowRightLeft, label: 'Cash Flow', adminOnly: true },
+  { to: '/admin/expenses', icon: Receipt, label: 'Expenses', adminOnly: true },
+  { to: '/admin/reports', icon: LineChart, label: 'Reports', adminOnly: true },
+  { to: '/admin/messages', icon: Mail, label: 'Messages' },
+  { to: '/admin/users', icon: Shield, label: 'System Users', adminOnly: true },
 ];
 
 export default function AdminLayout() {
@@ -26,8 +28,16 @@ export default function AdminLayout() {
 
   return (
     <div className="flex h-screen bg-dark-950 overflow-hidden">
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/50 z-20" 
+          onClick={() => setSidebarOpen(false)} 
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className={`${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 bg-dark-900 border-r border-dark-700 flex flex-col flex-shrink-0`}>
+      <aside className={`fixed md:static inset-y-0 left-0 z-30 ${sidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full w-64 md:translate-x-0 md:w-16'} transition-transform md:transition-all duration-300 bg-dark-900 border-r border-dark-700 flex flex-col flex-shrink-0`}>
         {/* Logo */}
         <div className={`flex items-center justify-center p-4 border-b border-dark-700`}>
           <img src="/logo.png" alt="AS Gold Loan Logo" className={`${sidebarOpen ? 'h-10' : 'h-8'} object-contain transition-all`} />
@@ -35,8 +45,8 @@ export default function AdminLayout() {
 
         {/* Navigation */}
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-          {NAV.map(({ to, icon, label }) => (
-            <NavLink key={to} to={to}
+          {NAV.filter(item => !item.adminOnly || user?.role === 'admin').map(({ to, icon: Icon, label }) => (
+            <NavLink key={to} to={to} onClick={() => { if (window.innerWidth < 768) setSidebarOpen(false); }}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
                   ? 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
@@ -44,7 +54,7 @@ export default function AdminLayout() {
                 } ${!sidebarOpen && 'justify-center'}`
               }
             >
-              <span className="text-lg flex-shrink-0">{icon}</span>
+              <span className="flex-shrink-0"><Icon className="w-5 h-5" /></span>
               {sidebarOpen && label}
             </NavLink>
           ))}
@@ -62,16 +72,12 @@ export default function AdminLayout() {
                 <div className="text-dark-500 text-xs truncate">{user?.email}</div>
               </div>
               <button onClick={handleLogout} title="Logout" className="text-dark-500 hover:text-red-400 transition-colors p-1">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
+                <LogOut className="w-4 h-4" />
               </button>
             </div>
           ) : (
             <button onClick={handleLogout} title="Logout" className="text-dark-500 hover:text-red-400 transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
+              <LogOut className="w-5 h-5" />
             </button>
           )}
         </div>
@@ -83,9 +89,7 @@ export default function AdminLayout() {
         <header className="bg-dark-900 border-b border-dark-700 px-6 py-3 flex items-center gap-4">
           <button onClick={() => setSidebarOpen(!sidebarOpen)}
             className="text-dark-400 hover:text-white transition-colors">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <Menu className="w-5 h-5" />
           </button>
           <div className="flex-1" />
           <div className="flex items-center gap-2">

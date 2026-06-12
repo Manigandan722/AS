@@ -18,6 +18,7 @@ import CashFlow from './pages/admin/CashFlow';
 import Expenses from './pages/admin/Expenses';
 import Reports from './pages/admin/Reports';
 import Messages from './pages/admin/Messages';
+import Users from './pages/admin/Users';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth();
@@ -27,6 +28,14 @@ function ProtectedRoute({ children }) {
     </div>
   );
   return isAuthenticated ? children : <Navigate to="/admin/login" replace />;
+}
+
+function RoleRoute({ role, children }) {
+  const { user } = useAuth();
+  if (user?.role !== role) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+  return children;
 }
 
 function App() {
@@ -56,9 +65,10 @@ function App() {
             <Route path="loans/new" element={<CreateLoan />} />
             <Route path="loans/:id" element={<LoanDetail />} />
             <Route path="customers" element={<Customers />} />
-            <Route path="cashflow" element={<CashFlow />} />
-            <Route path="expenses" element={<Expenses />} />
-            <Route path="reports" element={<Reports />} />
+            <Route path="cashflow" element={<RoleRoute role="admin"><CashFlow /></RoleRoute>} />
+            <Route path="expenses" element={<RoleRoute role="admin"><Expenses /></RoleRoute>} />
+            <Route path="reports" element={<RoleRoute role="admin"><Reports /></RoleRoute>} />
+            <Route path="users" element={<RoleRoute role="admin"><Users /></RoleRoute>} />
             <Route path="messages" element={<Messages />} />
           </Route>
         </Routes>
