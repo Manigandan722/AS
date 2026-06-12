@@ -24,12 +24,17 @@ app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/reports', require('./routes/reports'));
 app.use('/api/contact', require('./routes/contact'));
 
+
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
 
 // 404
 app.use((req, res) => res.status(404).json({ success: false, message: 'Route not found.' }));
 
+
+app.get('/', (req, res) => {
+    res.send('AS Gold Loan API is running');
+})
 // const PORT = process.env.PORT || 5000;
 // app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
 
