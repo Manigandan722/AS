@@ -30,7 +30,7 @@ router.get('/', protect, async (req, res) => {
 // @route PATCH /api/contact/:id/read
 router.patch('/:id/read', protect, async (req, res) => {
   try {
-    await ContactMessage.findByIdAndUpdate(req.params.id, { read: true });
+    await ContactMessage.findByIdAndUpdate(req.params.id, { read: true }, { returnDocument: 'after' });
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

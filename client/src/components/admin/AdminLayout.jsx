@@ -37,7 +37,8 @@ export default function AdminLayout() {
       )}
 
       {/* Sidebar */}
-      <aside className={`fixed md:static inset-y-0 left-0 z-30 ${sidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full w-64 md:translate-x-0 md:w-16'} transition-transform md:transition-all duration-300 bg-dark-900 border-r border-dark-700 flex flex-col flex-shrink-0`}>
+      <aside 
+        className={`fixed md:static inset-y-0 left-0 z-30 ${sidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full w-64 md:translate-x-0 md:w-16'} transition-transform md:transition-all duration-300 glass-nav border-r flex flex-col flex-shrink-0 shadow-2xl`}>
         {/* Logo */}
         <div className={`flex items-center justify-center p-4 border-b border-dark-700`}>
           <img src="/logo.png" alt="AS Gold Loan Logo" className={`${sidebarOpen ? 'h-10' : 'h-8'} object-contain transition-all`} />
@@ -48,10 +49,10 @@ export default function AdminLayout() {
           {NAV.filter(item => !item.adminOnly || user?.role === 'admin').map(({ to, icon: Icon, label }) => (
             <NavLink key={to} to={to} onClick={() => { if (window.innerWidth < 768) setSidebarOpen(false); }}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
-                  ? 'bg-gold-500/15 text-gold-400 border border-gold-500/30'
-                  : 'text-dark-400 hover:bg-dark-700 hover:text-white'
-                } ${!sidebarOpen && 'justify-center'}`
+                `flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${isActive
+                  ? 'bg-gradient-to-r from-gold-500/20 to-transparent text-gold-400 border-l-4 border-gold-500 shadow-glow-gold'
+                  : 'text-dark-400 hover:bg-dark-700/50 hover:text-white hover:translate-x-1'
+                } ${!sidebarOpen && 'justify-center border-l-0'}`
               }
             >
               <span className="flex-shrink-0"><Icon className="w-5 h-5" /></span>
@@ -86,17 +87,24 @@ export default function AdminLayout() {
       {/* Main content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top bar */}
-        <header className="bg-dark-900 border-b border-dark-700 px-6 py-3 flex items-center gap-4">
+        <header 
+          data-aos="fade-down"
+          className="glass-nav border-b px-6 py-4 flex items-center gap-4 z-10 shadow-lg">
           <button onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-dark-400 hover:text-white transition-colors">
+            className="text-dark-400 hover:text-white transition-transform hover:scale-110 active:scale-95">
             <Menu className="w-5 h-5" />
           </button>
           <div className="flex-1" />
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            <span className="text-dark-400 text-xs">System Active</span>
+          <div className="flex items-center gap-3 bg-dark-800/50 px-3 py-1.5 rounded-full border border-dark-700/50">
+            <div className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+            </div>
+            <span className="text-dark-300 text-xs font-medium tracking-wide">System Active</span>
           </div>
-          <div className="text-dark-400 text-xs">{new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+          <div className="text-dark-400 text-xs font-medium hidden sm:block bg-dark-800/50 px-3 py-1.5 rounded-full border border-dark-700/50">
+            {new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+          </div>
         </header>
 
         {/* Page content */}

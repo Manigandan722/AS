@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getExpenses, addExpense, deleteExpense } from '../../services/api';
+import { Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const fmtINR = (n) => `₹${(n || 0).toLocaleString('en-IN')}`;
@@ -129,7 +130,9 @@ export default function Expenses() {
                 <td className="text-dark-400 text-sm">{exp.description || '—'}</td>
                 <td className="text-red-400 font-semibold">{fmtINR(exp.amount)}</td>
                 <td>
-                  <button onClick={() => handleDelete(exp._id)} className="text-dark-600 hover:text-red-400 transition-colors text-xs px-2 py-1">Del</button>
+                  <button onClick={() => handleDelete(exp._id)} title="Delete Expense" className="text-dark-600 hover:text-red-400 transition-colors p-1.5 rounded-lg hover:bg-red-500/10">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </td>
               </tr>
             ))}

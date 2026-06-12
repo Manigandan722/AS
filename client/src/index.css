@@ -12,6 +12,7 @@
     color: #f1f5f9;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
   }
   ::-webkit-scrollbar { width: 6px; height: 6px; }
   ::-webkit-scrollbar-track { background: #1e293b; }
@@ -20,19 +21,25 @@
 
 @layer components {
   .btn-gold {
-    @apply bg-gradient-to-r from-gold-500 to-gold-400 text-dark-900 font-semibold px-6 py-3 rounded-xl hover:from-gold-400 hover:to-gold-300 transition-all duration-300 shadow-lg hover:shadow-gold-500/30 hover:-translate-y-0.5 active:translate-y-0;
+    @apply bg-gradient-to-r from-gold-500 to-gold-400 text-dark-900 font-semibold px-6 py-3 rounded-xl hover:from-gold-400 hover:to-gold-300 transition-all duration-300 shadow-lg hover:-translate-y-0.5 active:translate-y-0;
   }
+  .btn-gold:hover { box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
+  
   .btn-outline {
     @apply border-2 border-gold-500 text-gold-400 font-semibold px-6 py-3 rounded-xl hover:bg-gold-500/10 transition-all duration-300;
   }
+  .btn-outline:hover { box-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
   .card {
-    @apply bg-dark-800 border border-dark-700 rounded-2xl p-6;
+    @apply bg-dark-800/80 backdrop-blur-md border border-dark-700 rounded-2xl p-6 transition-all duration-300 hover:bg-dark-800;
   }
   .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl;
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-glass;
+  }
+  .glass-nav {
+    @apply bg-dark-900/80 backdrop-blur-lg border-dark-700/50;
   }
   .input {
-    @apply w-full bg-dark-700 border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/50 transition-all duration-200;
+    @apply w-full bg-dark-900/50 backdrop-blur-sm border border-dark-600 rounded-xl px-4 py-3 text-white placeholder-dark-400 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500/50 transition-all duration-200 focus:bg-dark-900/80;
   }
   .label {
     @apply block text-sm font-medium text-dark-300 mb-1.5;

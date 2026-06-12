@@ -52,7 +52,7 @@ router.post('/', async (req, res) => {
   try {
     const {
       customerName, mobile, aadhaar, address,
-      goldType, goldWeight, goldPurity, goldValue,
+      itemCategory, goldType, goldWeight, goldPurity, goldValue,
       loanAmount, interestRate, loanDate, dueDate,
     } = req.body;
 
@@ -64,7 +64,7 @@ router.post('/', async (req, res) => {
 
     const loan = await Loan.create({
       customerName, mobile, aadhaar, address, customerId: customer._id,
-      goldType, goldWeight, goldPurity, goldValue,
+      itemCategory, goldType, goldWeight, goldPurity, goldValue,
       loanAmount, interestRate,
       loanDate: loanDate || new Date(),
       dueDate,
@@ -80,7 +80,7 @@ router.post('/', async (req, res) => {
 // @route PUT /api/loans/:id
 router.put('/:id', async (req, res) => {
   try {
-    const loan = await Loan.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const loan = await Loan.findByIdAndUpdate(req.params.id, req.body, { returnDocument: 'after', runValidators: true });
     if (!loan) return res.status(404).json({ success: false, message: 'Loan not found.' });
     res.json({ success: true, loan });
   } catch (err) {
@@ -119,7 +119,7 @@ router.patch('/:id/reject', async (req, res) => {
     const loan = await Loan.findByIdAndUpdate(
       req.params.id,
       { status: 'Rejected' },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!loan) return res.status(404).json({ success: false, message: 'Loan not found.' });
     res.json({ success: true, loan });
@@ -161,7 +161,7 @@ router.patch('/:id/release-gold', async (req, res) => {
     const loan = await Loan.findByIdAndUpdate(
       req.params.id,
       { goldReleased: true },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!loan) return res.status(404).json({ success: false, message: 'Loan not found.' });
     res.json({ success: true, loan });

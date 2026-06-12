@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import AOS from 'aos';
 
 // Customer pages
 import CustomerHome from './pages/customer/Home';
@@ -39,6 +41,15 @@ function RoleRoute({ role, children }) {
 }
 
 function App() {
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+      easing: 'ease-out-cubic',
+    });
+  }, []);
+
   return (
     <AuthProvider>
       <BrowserRouter>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Eye, CheckCircle, XCircle, Lock, Unlock, Trash2 } from 'lucide-react';
 import { getLoans, approveLoan, rejectLoan, closeLoan, releaseGold, deleteLoan } from '../../services/api';
 import toast from 'react-hot-toast';
 
@@ -92,7 +93,7 @@ export default function Loans() {
             <tr>
               <th>Loan No.</th>
               <th>Customer</th>
-              <th>Gold</th>
+              <th>Item</th>
               <th>Amount</th>
               <th>Rate</th>
               <th>Loan Date</th>
@@ -119,7 +120,7 @@ export default function Loans() {
                   <div className="text-dark-500 text-xs">{loan.mobile}</div>
                 </td>
                 <td>
-                  <div>{loan.goldType}</div>
+                  <div>{loan.itemCategory === 'Silver' ? <span className="text-gray-400 font-medium text-xs border border-gray-600 rounded px-1 mr-1">Ag</span> : <span className="text-gold-400 font-medium text-xs border border-gold-600/50 rounded px-1 mr-1">Au</span>} {loan.goldType}</div>
                   <div className="text-dark-500 text-xs">{loan.goldWeight}g • {loan.goldPurity}</div>
                 </td>
                 <td className="font-semibold text-white">{fmtINR(loan.loanAmount)}</td>
@@ -128,29 +129,47 @@ export default function Loans() {
                 <td className="text-dark-300">{fmtDate(loan.dueDate)}</td>
                 <td><span className={STATUS_BADGE[loan.status]}>{loan.status}</span></td>
                 <td>
-                  <div className="flex items-center gap-1 flex-wrap">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <button onClick={() => navigate(`/admin/loans/${loan._id}`)}
-                      className="text-xs px-2 py-1 bg-dark-700 hover:bg-dark-600 rounded-lg text-white transition-colors">View</button>
+                      title="View Details"
+                      className="p-1.5 bg-dark-700 hover:bg-dark-600 rounded-lg text-white transition-colors">
+                      <Eye className="w-4 h-4" />
+                    </button>
                     {loan.status === 'Pending' && <>
                       <button onClick={() => handleAction(loan._id, 'approve')}
                         disabled={!!actionLoading}
-                        className="text-xs px-2 py-1 bg-green-500/20 hover:bg-green-500/30 rounded-lg text-green-400 transition-colors">Approve</button>
+                        title="Approve"
+                        className="p-1.5 bg-green-500/20 hover:bg-green-500/30 rounded-lg text-green-400 transition-colors">
+                        <CheckCircle className="w-4 h-4" />
+                      </button>
                       <button onClick={() => handleAction(loan._id, 'reject')}
                         disabled={!!actionLoading}
-                        className="text-xs px-2 py-1 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors">Reject</button>
+                        title="Reject"
+                        className="p-1.5 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-red-400 transition-colors">
+                        <XCircle className="w-4 h-4" />
+                      </button>
                     </>}
                     {loan.status === 'Approved' && <>
                       <button onClick={() => handleAction(loan._id, 'close')}
                         disabled={!!actionLoading}
-                        className="text-xs px-2 py-1 bg-blue-500/20 hover:bg-blue-500/30 rounded-lg text-blue-400 transition-colors">Close</button>
+                        title="Close Loan"
+                        className="p-1.5 bg-blue-500/20 hover:bg-blue-500/30 rounded-lg text-blue-400 transition-colors">
+                        <Lock className="w-4 h-4" />
+                      </button>
                     </>}
                     {loan.status === 'Closed' && !loan.goldReleased && (
                       <button onClick={() => handleAction(loan._id, 'release')}
                         disabled={!!actionLoading}
-                        className="text-xs px-2 py-1 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg text-purple-400 transition-colors">Release Gold</button>
+                        title="Release Item"
+                        className="p-1.5 bg-purple-500/20 hover:bg-purple-500/30 rounded-lg text-purple-400 transition-colors">
+                        <Unlock className="w-4 h-4" />
+                      </button>
                     )}
                     <button onClick={() => handleAction(loan._id, 'delete')}
-                      className="text-xs px-2 py-1 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 transition-colors">Del</button>
+                      title="Delete"
+                      className="p-1.5 bg-red-500/10 hover:bg-red-500/20 rounded-lg text-red-500 transition-colors">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </td>
               </tr>

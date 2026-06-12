@@ -86,7 +86,7 @@ export default function LoanDetail() {
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <h1 className="text-xl sm:text-2xl font-bold gold-text font-mono">{loan.loanNumber}</h1>
               <span className={STATUS_BADGE[loan.status]}>{loan.status}</span>
-              {loan.goldReleased && <span className="badge bg-purple-500/20 text-purple-400 border border-purple-500/30">Gold Released</span>}
+              {loan.goldReleased && <span className="badge bg-purple-500/20 text-purple-400 border border-purple-500/30">Item Released</span>}
             </div>
             <p className="text-dark-400 text-sm mt-0.5">Loan Details</p>
           </div>
@@ -113,7 +113,7 @@ export default function LoanDetail() {
           {loan.status === 'Closed' && !loan.goldReleased && (
             <button onClick={() => handleAction('release')} disabled={!!actionLoading}
               className="bg-purple-500/20 border border-purple-500/30 text-purple-400 hover:bg-purple-500/30 px-4 py-2 rounded-xl text-sm font-medium transition-colors">
-              {actionLoading === 'release' ? '...' : '🔓 Release Gold'}
+              {actionLoading === 'release' ? '...' : '🔓 Release Item'}
             </button>
           )}
         </div>
@@ -129,10 +129,10 @@ export default function LoanDetail() {
           <Row label="Address" value={loan.address || '—'} />
         </div>
 
-        {/* Gold Info */}
+        {/* Item Info */}
         <div className="card">
-          <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><Coins className="w-5 h-5 text-gold-400" /> Gold Details</h2>
-          <Row label="Gold Type" value={loan.goldType} />
+          <h2 className="text-white font-semibold mb-4 flex items-center gap-2"><Coins className="w-5 h-5 text-gold-400" /> Item Details</h2>
+          <Row label="Item Type" value={`${loan.itemCategory ? loan.itemCategory + ' ' : ''}${loan.goldType}`} />
           <Row label="Weight" value={`${loan.goldWeight} grams`} />
           <Row label="Purity" value={loan.goldPurity} />
           <Row label="Estimated Value" value={fmtINR(loan.goldValue)} accent />

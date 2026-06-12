@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getCashFlow, addCashFlow, deleteCashFlow } from '../../services/api';
+import { Trash2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const fmtINR = (n) => `₹${(n || 0).toLocaleString('en-IN')}`;
@@ -183,7 +184,9 @@ export default function CashFlow() {
                   {f.type === 'in' ? '+' : '-'}{fmtINR(f.amount)}
                 </td>
                 <td>
-                  <button onClick={() => handleDelete(f._id)} className="text-dark-600 hover:text-red-400 transition-colors text-xs px-2 py-1">Del</button>
+                  <button onClick={() => handleDelete(f._id)} title="Delete Entry" className="text-dark-600 hover:text-red-400 transition-colors p-1.5 rounded-lg hover:bg-red-500/10">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
                 </td>
               </tr>
             ))}

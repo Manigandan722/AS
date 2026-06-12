@@ -5,7 +5,9 @@ import toast from 'react-hot-toast';
 import { User, Coins, ClipboardList } from 'lucide-react';
 
 const GOLD_TYPES = ['Necklace', 'Ring', 'Bangle', 'Chain', 'Earring', 'Bracelet', 'Anklet', 'Others'];
-const PURITIES = ['24K (99.9%)', '22K (91.6%)', '18K (75%)', '14K (58.3%)', 'Other'];
+const SILVER_TYPES = ['Anklet', 'Chain', 'Ring', 'Plate', 'Coin', 'Others'];
+const GOLD_PURITIES = ['24K (99.9%)', '22K (91.6%)', '18K (75%)', '14K (58.3%)', 'Other'];
+const SILVER_PURITIES = ['99.9%', '92.5%', '80%', 'Other'];
 
 const Field = ({ label, children }) => (
   <div>
@@ -19,7 +21,7 @@ export default function CreateLoan() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     customerName: '', mobile: '', aadhaar: '', address: '',
-    goldType: 'Necklace', goldWeight: '', goldPurity: '22K (91.6%)', goldValue: '',
+    itemCategory: 'Gold', goldType: 'Necklace', goldWeight: '', goldPurity: '22K (91.6%)', goldValue: '',
     loanAmount: '', interestRate: '', loanDate: new Date().toISOString().split('T')[0],
     dueDate: '', notes: '',
   });
@@ -28,6 +30,18 @@ export default function CreateLoan() {
     const val = e.target.value;
     setForm(prev => {
       const next = { ...prev, [field]: val };
+      
+      // Update default type and purity if category changes
+      if (field === 'itemCategory') {
+        if (val === 'Gold') {
+          next.goldType = 'Necklace';
+          next.goldPurity = '22K (91.6%)';
+        } else if (val === 'Silver') {
+          next.goldType = 'Anklet';
+          next.goldPurity = '92.5%';
+        }
+      }
+
       // Auto-set interest rate
       if (field === 'loanAmount') {
         const amt = parseFloat(val);
@@ -88,26 +102,32 @@ export default function CreateLoan() {
           </div>
         </div>
 
-        {/* Gold Info */}
+        {/* Item Info */}
         <div className="card">
           <h2 className="text-lg font-semibold text-white mb-5 flex items-center gap-2">
-            <Coins className="w-5 h-5 text-gold-400" /> Gold Information
+            <Coins className="w-5 h-5 text-gold-400" /> Item Information
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Gold Type *">
-              <select className="input" value={form.goldType} onChange={s('goldType')} required>
-                {GOLD_TYPES.map(g => <option key={g}>{g}</option>)}
+            <Field label="Item Category *">
+              <select className="input" value={form.itemCategory} onChange={s('itemCategory')} required>
+                <option value="Gold">Gold</option>
+                <option value="Silver">Silver</option>
               </select>
             </Field>
-            <Field label="Gold Weight (grams) *">
+            <Field label="Item Type *">
+              <select className="input" value={form.goldType} onChange={s('goldType')} required>
+                {(form.itemCategory === 'Silver' ? SILVER_TYPES : GOLD_TYPES).map(g => <option key={g}>{g}</option>)}
+              </select>
+            </Field>
+            <Field label={`${form.itemCategory} Weight (grams) *`}>
               <input type="number" step="0.01" className="input" placeholder="e.g. 10.5" value={form.goldWeight} onChange={s('goldWeight')} required />
             </Field>
-            <Field label="Gold Purity *">
+            <Field label={`${form.itemCategory} Purity *`}>
               <select className="input" value={form.goldPurity} onChange={s('goldPurity')} required>
-                {PURITIES.map(p => <option key={p}>{p}</option>)}
+                {(form.itemCategory === 'Silver' ? SILVER_PURITIES : GOLD_PURITIES).map(p => <option key={p}>{p}</option>)}
               </select>
             </Field>
-            <Field label="Gold Estimated Value (₹) *">
+            <Field label={`${form.itemCategory} Estimated Value (₹) *`}>
               <input type="number" className="input" placeholder="e.g. 45000" value={form.goldValue} onChange={s('goldValue')} required />
             </Field>
           </div>
@@ -146,7 +166,7 @@ export default function CreateLoan() {
               {[
                 ['Monthly Interest', `₹${((parseFloat(form.loanAmount || 0) * parseFloat(form.interestRate || 0)) / 100).toLocaleString('en-IN')}`],
                 ['Loan Amount', `₹${parseFloat(form.loanAmount || 0).toLocaleString('en-IN')}`],
-                ['Gold Value', `₹${parseFloat(form.goldValue || 0).toLocaleString('en-IN')}`],
+                [`${form.itemCategory} Value`, `₹${parseFloat(form.goldValue || 0).toLocaleString('en-IN')}`],
               ].map(([label, val]) => (
                 <div key={label} className="p-3 bg-dark-700 rounded-xl text-center">
                   <div className="text-dark-400 text-xs mb-1">{label}</div>

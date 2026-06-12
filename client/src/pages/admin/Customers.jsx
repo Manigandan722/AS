@@ -93,7 +93,7 @@ export default function Customers() {
                       </div>
                       <div className="flex items-center justify-between text-sm">
                         <span className="text-white font-semibold">{fmtINR(loan.loanAmount)}</span>
-                        <span className="text-dark-400">{loan.goldType} • {loan.goldWeight}g</span>
+                        <span className="text-dark-400">{(loan.itemCategory && loan.itemCategory === 'Silver') ? 'Ag' : 'Au'} {loan.goldType} • {loan.goldWeight}g</span>
                         <span className="text-dark-500">{fmtDate(loan.loanDate)}</span>
                       </div>
                     </div>

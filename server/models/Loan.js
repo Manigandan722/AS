@@ -17,7 +17,8 @@ const loanSchema = new mongoose.Schema({
   address: { type: String },
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Customer' },
 
-  // Gold info
+  // Item info
+  itemCategory: { type: String, enum: ['Gold', 'Silver'], default: 'Gold' },
   goldType: { type: String, required: true },
   goldWeight: { type: Number, required: true },
   goldPurity: { type: String, required: true },
@@ -39,17 +40,16 @@ const loanSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Auto-generate loan number before saving
-loanSchema.pre('save', async function (next) {
-  if (this.loanNumber) return next();
+loanSchema.pre('save', async function () {
+  if (this.loanNumber) return;
   const year = new Date().getFullYear();
   const counterId = `loan_${year}`;
   const counter = await Counter.findByIdAndUpdate(
     counterId,
     { $inc: { seq: 1 } },
-    { new: true, upsert: true }
+    { returnDocument: 'after', upsert: true }
   );
   this.loanNumber = `ASNK-${year}-${String(counter.seq).padStart(4, '0')}`;
-  next();
 });
 
 module.exports = mongoose.model('Loan', loanSchema);

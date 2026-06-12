@@ -1,6 +1,17 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Zap, ShieldCheck, Coins, ClipboardCheck, Percent, Award, Scale, RefreshCw, CreditCard, Unlock, IdCard, Smartphone, Home as HomeIcon, MapPin, Clock, CheckCircle2, Menu, X } from 'lucide-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+};
 
 const LanguageContext = createContext();
 
@@ -210,21 +221,23 @@ function Hero() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
-        <div className="max-w-3xl pt-10">
-          <div className="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/30 rounded-full px-4 py-2 mb-8">
+        <motion.div 
+          variants={staggerContainer} initial="hidden" animate="visible"
+          className="max-w-3xl pt-10">
+          <motion.div variants={fadeUp} className="inline-flex items-center gap-2 bg-gold-500/10 border border-gold-500/30 rounded-full px-4 py-2 mb-8">
             <div className="w-2 h-2 bg-gold-400 rounded-full animate-pulse" />
             <span className="text-gold-400 text-sm font-medium">{t('hero').badge}</span>
-          </div>
+          </motion.div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-tight mb-4 tracking-tight">
+          <motion.h1 variants={fadeUp} className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-tight mb-4 tracking-tight">
             <span className="gold-text">{t('hero').title1}</span><br />
             <span className="text-white">{t('hero').title2}</span>
-          </h1>
-          <p className="text-dark-300 text-lg sm:text-xl mb-10 max-w-xl leading-relaxed">
+          </motion.h1>
+          <motion.p variants={fadeUp} className="text-dark-300 text-lg sm:text-xl mb-10 max-w-xl leading-relaxed">
             {t('hero').subtitle}
-          </p>
+          </motion.p>
 
-          <div className="flex flex-wrap gap-3 mb-10">
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-3 mb-10">
             {[
               { text: t('hero').f1, icon: Zap },
               { text: t('hero').f2, icon: ShieldCheck },
@@ -235,22 +248,24 @@ function Hero() {
                 <Icon className="w-4 h-4 text-gold-400" /> {text}
               </span>
             ))}
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col sm:flex-row gap-4">
+          <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4">
             <a href="#contact" className="btn-gold text-base text-center">{t('hero').btnApply}</a>
             <a href="#calculator" className="btn-outline text-base text-center">{t('hero').btnCalc}</a>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="mt-20 grid grid-cols-3 gap-6 max-w-xl">
+        <motion.div 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8, duration: 1 }}
+          className="mt-20 grid grid-cols-3 gap-6 max-w-xl">
           {[['1000+', t('hero').stat1], ['10+', t('hero').stat2], ['100%', t('hero').stat3]].map(([val, label]) => (
             <div key={label} className="text-center">
               <div className="text-3xl font-bold gold-text">{val}</div>
               <div className="text-dark-400 text-sm mt-1">{label}</div>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -260,13 +275,15 @@ function InterestSection() {
   const { t } = useContext(LanguageContext);
   return (
     <section id="calculator-info" className="py-20 bg-dark-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+      <motion.div 
+        initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerContainer}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div variants={fadeUp} className="text-center mb-14">
           <h2 className="text-4xl font-bold text-white mb-3">{t('interest').title} <span className="gold-text">{t('interest').titleGold}</span></h2>
           <p className="text-dark-400">{t('interest').subtitle}</p>
-        </div>
+        </motion.div>
         <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-          <div className="relative card overflow-hidden group hover:border-gold-500/50 transition-colors duration-300">
+          <motion.div variants={fadeUp} className="relative card overflow-hidden group hover:border-gold-500/50 transition-colors duration-300">
             <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full -translate-y-8 translate-x-8" />
             <Percent className="w-12 h-12 text-yellow-500 mb-4" />
             <div className="text-dark-400 text-sm font-medium uppercase tracking-wider mb-2">{t('interest').tier1}</div>
@@ -276,8 +293,8 @@ function InterestSection() {
             <div className="mt-4 p-3 bg-dark-700 rounded-xl text-sm text-dark-300">
               {t('interest').tier1Desc}
             </div>
-          </div>
-          <div className="relative card overflow-hidden group hover:border-gold-500/50 transition-colors duration-300 border-gold-500/30">
+          </motion.div>
+          <motion.div variants={fadeUp} className="relative card overflow-hidden group hover:border-gold-500/50 transition-colors duration-300 border-gold-500/30">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gold-500/10 rounded-full -translate-y-8 translate-x-8" />
             <div className="absolute top-4 right-4 bg-gold-500 text-dark-900 text-xs font-bold px-3 py-1 rounded-full">{t('interest').popular}</div>
             <Award className="w-12 h-12 text-gold-400 mb-4" />
@@ -288,9 +305,9 @@ function InterestSection() {
             <div className="mt-4 p-3 bg-dark-700 rounded-xl text-sm text-dark-300">
               {t('interest').tier2Desc}
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -318,13 +335,15 @@ function Calculator() {
 
   return (
     <section id="calculator" className="py-20 bg-dark-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+      <motion.div 
+        initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerContainer}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div variants={fadeUp} className="text-center mb-14">
           <h2 className="text-4xl font-bold text-white mb-3">{t('calc').title} <span className="gold-text">{t('calc').titleGold}</span></h2>
           <p className="text-dark-400">{t('calc').subtitle}</p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-2xl mx-auto card border-gold-500/20">
+        <motion.div variants={fadeUp} className="max-w-2xl mx-auto card border-gold-500/20">
           <div className="grid sm:grid-cols-2 gap-6 mb-6">
             <div>
               <label className="label">{t('calc').amount}</label>
@@ -340,7 +359,9 @@ function Calculator() {
           <button onClick={calculate} className="btn-gold w-full text-base">{t('calc').btnCalc}</button>
 
           {result && (
-            <div className="mt-8 grid grid-cols-2 gap-4 animate-fade-in">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              className="mt-8 grid grid-cols-2 gap-4">
               {[
                 [t('calc').resRate, `${result.rate}% / ${t('interest').perMonth}`],
                 [t('calc').resMonthly, fmt(result.monthlyInterest)],
@@ -352,10 +373,10 @@ function Calculator() {
                   <div className={`font-bold text-lg ${i === 3 ? 'gold-text text-2xl' : 'text-white'}`}>{val}</div>
                 </div>
               ))}
-            </div>
+            </motion.div>
           )}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
@@ -372,24 +393,25 @@ function Services() {
 
   return (
     <section id="services" className="py-20 bg-dark-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+      <motion.div 
+        initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerContainer}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div variants={fadeUp} className="text-center mb-14">
           <h2 className="text-4xl font-bold text-white mb-3">{t('services').title} <span className="gold-text">{t('services').titleGold}</span></h2>
           <p className="text-dark-400">{t('services').subtitle}</p>
-        </div>
+        </motion.div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {SERVICES.map(({ icon: Icon, title, desc }, i) => (
-            <div key={title} className="card group hover:border-gold-500/40 transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-              style={{ animationDelay: `${i * 0.1}s` }}>
+            <motion.div variants={fadeUp} key={title} className="card group hover:border-gold-500/40 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
               <div className="mb-4 group-hover:scale-110 transition-transform duration-300">
                 <Icon className="w-10 h-10 text-gold-400" />
               </div>
               <h3 className="text-white font-bold text-lg mb-2">{title}</h3>
               <p className="text-dark-400 text-sm leading-relaxed">{desc}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -398,11 +420,13 @@ function Documents() {
   const { t } = useContext(LanguageContext);
   return (
     <section id="documents" className="py-20 bg-dark-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-14">
+      <motion.div 
+        initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerContainer}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div variants={fadeUp} className="text-center mb-14">
           <h2 className="text-4xl font-bold text-white mb-3">{t('docs').title} <span className="gold-text">{t('docs').titleGold}</span></h2>
           <p className="text-dark-400">{t('docs').subtitle}</p>
-        </div>
+        </motion.div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
           {[
             { icon: IdCard, doc: t('docs').d1, note: t('docs').d1d },
@@ -410,17 +434,17 @@ function Documents() {
             { icon: Smartphone, doc: t('docs').d3, note: t('docs').d3d },
             { icon: HomeIcon, doc: t('docs').d4, note: t('docs').d4d },
           ].map(({ icon: Icon, doc, note }) => (
-            <div key={doc} className="card text-center group hover:border-gold-500/40 transition-all duration-300 hover:-translate-y-1">
+            <motion.div variants={fadeUp} key={doc} className="card text-center group hover:border-gold-500/40 transition-all duration-300 hover:-translate-y-1">
               <div className="mb-3 float flex justify-center"><Icon className="w-10 h-10 text-gold-400" /></div>
               <h3 className="text-white font-semibold mb-1">{doc}</h3>
               <p className="text-dark-400 text-xs">{note}</p>
               <div className="mt-3 w-6 h-6 bg-green-500/20 border border-green-500/40 rounded-full flex items-center justify-center mx-auto">
                 <span className="text-green-400 text-xs">✓</span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -445,9 +469,11 @@ function ContactSection() {
 
   return (
     <section id="contact" className="py-20 bg-dark-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div 
+        initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} variants={staggerContainer}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
+          <motion.div variants={fadeUp}>
             <h2 className="text-4xl font-bold text-white mb-4">{t('contact').title} <span className="gold-text">{t('contact').titleGold}</span></h2>
             <p className="text-dark-400 mb-8">{t('contact').subtitle}</p>
             <div className="space-y-4">
@@ -465,9 +491,9 @@ function ContactSection() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="card border-gold-500/20">
+          <motion.div variants={fadeUp} className="card border-gold-500/20">
             <h3 className="text-white font-bold text-xl mb-6">{t('contact').formTitle}</h3>
             {status === 'success' ? (
               <div className="text-center py-8">
@@ -499,9 +525,9 @@ function ContactSection() {
                 </button>
               </form>
             )}
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

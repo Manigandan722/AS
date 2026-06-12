@@ -99,7 +99,7 @@ export default function Reports() {
                     <tr>
                       <th>Loan No.</th>
                       <th>Customer</th>
-                      <th>Gold</th>
+                      <th>Item</th>
                       <th>Amount</th>
                       <th>Interest</th>
                       <th>Date</th>
@@ -110,7 +110,7 @@ export default function Reports() {
                       <tr key={loan._id}>
                         <td className="text-gold-400 font-mono text-xs">{loan.loanNumber}</td>
                         <td className="text-white">{loan.customerName}</td>
-                        <td className="text-dark-400 text-xs">{loan.goldType} {loan.goldWeight}g</td>
+                        <td className="text-dark-400 text-xs">{(loan.itemCategory && loan.itemCategory === 'Silver') ? 'Ag' : 'Au'} {loan.goldType} {loan.goldWeight}g</td>
                         <td className="font-semibold text-white">{fmtINR(loan.loanAmount)}</td>
                         <td className="text-gold-400">{loan.interestRate}%</td>
                         <td className="text-dark-300">{fmtDate(loan.loanDate)}</td>
